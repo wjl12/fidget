@@ -72,7 +72,7 @@ function visitEffect(effect) {
     text += ind() + `innerShadow ${effect.radius}, ${effect.offset.x}, ${effect.offset.y}, ${JSON.stringify(toHtmlColor(effect.color))}, ${effect.color.a}\n`;
   }
 }
-function visit(node) {
+function visitNode(node) {
   if (!node.visible) {
     return;
   }
@@ -144,7 +144,7 @@ function visit(node) {
       v = "vTop";
     if (node.textAlignVertical == "BOTTOM")
       v = "vBottom";
-    text += ind() + `font ${fontFamily}, ${node.fontSize}, ${fontWeight}, ${lineHeight}, ${h}, ${v}\n`;
+    text += ind() + "font ${fontFamily}, ${node.fontSize}, ${fontWeight}, ${lineHeight}, ${h}, ${v}\n";
     text += ind() + "characters " + JSON.stringify(node.characters) + "\n";
     if (node.textAutoResize != "NONE") {
       text += ind() + `textAutoResize ts${titleCase(node.textAutoResize)}\n`
@@ -169,7 +169,7 @@ function visit(node) {
       at.x = node.x;
       at.y = node.y;
     }
-    node.children.slice().reverse().forEach(visit);
+    node.children.slice().reverse().forEach(visitNode);
     if (node.type == "GROUP") {
       at = atStack.pop();
     }
@@ -178,7 +178,7 @@ function visit(node) {
 }
 for (const node of figma.currentPage.selection) {
   indent = 0;
-  visit(node);
+  visitNode(node);
   text += "\n";
 }
 if (text.trim().length == 0) {
